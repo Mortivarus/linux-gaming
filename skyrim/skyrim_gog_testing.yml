@@ -1,0 +1,39 @@
+name: The Elder Scrolls Skyrim Special Edition
+game_slug: the-elder-scrolls-v-skyrim-special-edition
+version: ""
+slug: skyrim-special-edition
+runner: wine
+
+script:
+  files:
+    - setup: "N/A:Select the Skyrim GOG offline installer please."
+    - mosetup: "https://github.com/ModOrganizer2/modorganizer/releases/download/v2.5.2/Mod.Organizer-2.5.2.7z"
+    - rootbuilder: "https://github.com/Kezyma/ModOrganizer-Plugins/releases/download/rootbuilder/rootbuilder.5.0.5.zip"
+    - skse: "https://skse.silverlock.org/beta/skse64_2_02_06_gog.7z"
+  game:
+    exe: $GAMEDIR/drive_c/game/SkyrimSELauncher.exe
+    launch_configs:
+          - exe: "$GAMEDIR/drive_c/mo2/ModOrganizer.exe"
+            name: MO2 Skyrim
+            prefix: "$GAMEDIR"
+  installer:
+    - task:
+        description: "Creating Wine prefix"
+        name: "create_prefix"
+        prefix: "$GAMEDIR"
+    - execute:
+        name: Extract gog installer
+        command: innoextract -e "$setup" -d "$GAMEDIR/drive_c/game"
+    - execute:
+        name: Remove innoextract artifacts
+        command: rm -rf $GAMEDIR/drive_c/game/{tmp,app,commonappdata}
+    - extract:
+        file: mosetup
+        dst: "$GAMEDIR/drive_c/mo2"
+    - extract:
+        file: rootbuilder
+        dst: "$GAMEDIR/drive_c/mo2/plugins/rootbuilder"
+    - extract:
+        file: skse
+        dst: "$GAMEDIR/drive_c/mo2/mods/skse"
+
