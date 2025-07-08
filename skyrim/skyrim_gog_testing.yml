@@ -6,7 +6,6 @@ runner: wine
 
 script:
   files:
-    - setup: "N/A:Select the Skyrim GOG offline installer please."
     - mosetup: "https://github.com/ModOrganizer2/modorganizer/releases/download/v2.5.2/Mod.Organizer-2.5.2.7z"
     - rootbuilder: "https://github.com/Kezyma/ModOrganizer-Plugins/releases/download/rootbuilder/rootbuilder.5.0.5.zip"
     - skse: "https://skse.silverlock.org/beta/skse64_2_02_06_gog.7z"
@@ -23,7 +22,7 @@ script:
         prefix: "$GAMEDIR"
     - execute:
         name: Extract gog installer
-        command: innoextract -e "$setup" -d "$GAMEDIR/drive_c/game"
+        command: rsync -auLvhP /home/mortivarus/Downloads/skyrimgog/files/ "$GAMEDIR/drive_c/game"
     - execute:
         name: Remove innoextract artifacts
         command: rm -rf $GAMEDIR/drive_c/game/{tmp,app,commonappdata}
